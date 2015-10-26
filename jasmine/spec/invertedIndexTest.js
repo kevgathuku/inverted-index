@@ -102,5 +102,14 @@ describe('Inverted Index Tests: ', function() {
       expect(index.searchIndex(['imagination', 'dwarf'])).toContain(1);
     });
 
+    it('handles varied number of of search terms as arguments', function() {
+      expect(index.searchIndex()).toBe(-1);
+      expect(index.searchIndex([])).toBe(-1);
+      expect(index.searchIndex(['imagination'])).toContain(0);
+      expect(index.searchIndex('imagination', 'dwarf')).toContain(1);
+      expect(index.searchIndex('imagination', 'dwarf', 'warrior')).toContain(1);
+      expect(index.searchIndex('imagination', 'dwarf', 'warrior').length).toBe(2);
+    });
+
   });
 });
