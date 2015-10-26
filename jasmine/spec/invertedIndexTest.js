@@ -20,6 +20,16 @@ describe('Inverted Index Tests: ', function() {
       expect(results.length).not.toEqual(0);
       expect(results.length).toEqual(2);
     });
+
+    it('Ensures each object property contains a string value', function() {
+      for (var i = 0, len = results.length; i < len; i++) {
+        // Iterate over the properties of each object
+        for(key in results[i]) {
+          // Ensure the value is a string
+          expect(typeof results[i][key]).toBe('string');
+        }
+      }
+    });
   });
 
   describe('Populates Index', function() {
