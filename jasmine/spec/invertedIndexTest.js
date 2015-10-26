@@ -92,5 +92,11 @@ describe('Inverted Index Tests: ', function() {
       expect(index.searchIndex('haha')).toBe(-1);
     });
 
+    it('handles an array of search terms', function() {
+      expect(index.searchIndex(['haha', 'impossible'])).toBe(-1);
+      expect(index.searchIndex(['imagination', 'dwarf'])).toContain(0);
+      expect(index.searchIndex(['imagination', 'dwarf'])).toContain(1);
+    });
+
   });
 });
