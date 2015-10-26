@@ -95,6 +95,38 @@ Index.prototype = {
     });
   },
 
+  searchIndex: function(terms) {
+    // If the function is passed a list of comma-separated values
+    // Convert the arguments to an array object
+    var args, results = [];
+    if(Array.isArray(terms)) {
+      args = arguments[0];
+    } else {
+      args = new Array(arguments.length);
+      for (var i = 0; i < args.length; i++) {
+        args[i] = arguments[i];
+      }
+    }
+
+    for (var j = 0; j < args.length; j++) {
+      // Convert each term to lowercase
+      var lower = args[j].toLowerCase();
+      // If a term is found in the index object
+      if (this.results.hasOwnProperty(lower)) {
+        // Push the term to the results array
+        results.push(this.results[lower]);
+      }
+    }
+
+    // Return -1 if none of the search terms is found in the index
+    if (results.length === 0) {
+      return -1;
+    } else {
+      return results;
+    }
+
+  },
+
   getIndex: function() {
     return this.results;
   },
