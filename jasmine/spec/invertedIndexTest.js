@@ -79,4 +79,18 @@ describe('Inverted Index Tests: ', function() {
       }
     });
   });
+
+  describe('Search Index', function() {
+
+    it('returns accurate results when searched', function() {
+      expect(Array.isArray(index.searchIndex('elf'))).toBe(true);
+      expect(index.searchIndex('rabbit')).toContain(0);
+      expect(index.searchIndex('hobbit')).toContain(1);
+    });
+
+    it('returns -1 when none of the terms is found', function() {
+      expect(index.searchIndex('haha')).toBe(-1);
+    });
+
+  });
 });
