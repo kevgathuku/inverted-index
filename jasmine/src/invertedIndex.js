@@ -96,16 +96,16 @@ Index.prototype = {
   },
 
   searchIndex: function(terms) {
-    // If the function is passed a list of comma-separated values
-    // Convert the arguments to an array object
     var args, results = [];
+    // If the argument is an array, assign it to args
     if(Array.isArray(terms)) {
       args = arguments[0];
-    } else {
-      args = new Array(arguments.length);
-      for (var i = 0; i < args.length; i++) {
-        args[i] = arguments[i];
-      }
+    }
+    // Otherwise convert the list of arguments to an array object
+    else {
+      // Set the value of this in slice to the array-like arguments object
+      // Returns an actual array object
+      args = Array.prototype.slice.call(arguments);
     }
 
     for (var j = 0; j < args.length; j++) {
