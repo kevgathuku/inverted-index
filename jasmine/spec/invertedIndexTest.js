@@ -86,6 +86,10 @@ describe('Inverted Index Tests: ', function() {
       expect(Array.isArray(index.searchIndex('elf'))).toBe(true);
       expect(index.searchIndex('rabbit')).toContain(0);
       expect(index.searchIndex('hobbit')).toContain(1);
+
+      // The returned array should have a maximum of 2 elements
+      expect(index.searchIndex(['imagination', 'dwarf', 'hobbit']).length)
+            .toBe(2);
     });
 
     it('returns -1 when none of the terms is found', function() {

@@ -113,8 +113,10 @@ Index.prototype = {
       var lower = args[j].toLowerCase();
       // If a term is found in the index object
       if (this.results.hasOwnProperty(lower)) {
-        // Push the term to the results array
-        results.push(this.results[lower]);
+        // Push the term to the results array if it doesn't exist
+        if (results.indexOf(this.results[lower]) === -1) {
+          results.push(this.results[lower]);
+        }
       }
     }
 
