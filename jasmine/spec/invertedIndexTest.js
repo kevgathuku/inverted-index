@@ -16,7 +16,7 @@ describe('Inverted Index Tests: ', function() {
   describe('Reads book data', function() {
 
     it('reads the JSON file successfully', function() {
-      expect(results).not.toBeUndefined();
+      expect(results).toBeDefined();
       expect(results.length).not.toEqual(0);
       expect(results.length).toEqual(2);
     });
