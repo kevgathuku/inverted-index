@@ -2,11 +2,13 @@ describe('Inverted Index Tests: ', function() {
 
   var index = new Index();
   var filter = new Filter();
-  var results;
+  var filePath = './books.json';
+  var results, path;
 
   beforeEach(function(done) {
-    index.createIndex('books.json', index.populateIndex).done(function(data) {
+    index.createIndex(filePath, index.populateIndex).done(function(data) {
       results = data;
+      path = index.extractFileName(filePath);
 
       // Invoke jasmine's done callback
       done();
@@ -38,18 +40,18 @@ describe('Inverted Index Tests: ', function() {
     var index1 = ['alliance', 'elf', 'dwarf', 'wizard'];
 
     it('creates the index once JSON file has been read', function() {
-      expect(index.getIndex()).not.toEqual({});
+      expect(index. getIndex(path)).not.toEqual({});
     });
 
     it('creates an index containing only lowercase terms', function() {
-      var keys = Object.keys(index.getIndex());
+      var keys = Object.keys(index. getIndex(path));
       for (var i = 0, len = keys.length; i < len; i++) {
         expect(keys[i]).toBe(keys[i].toLowerCase());
       }
     });
 
     it('creates index strings without punctuation', function() {
-      var keys = Object.keys(index.getIndex());
+      var keys = Object.keys(index. getIndex(path));
       for (var i = 0, len = keys.length; i < len; i++) {
         expect(keys[i].indexOf('.')).toBe(-1);
         expect(keys[i].indexOf(',')).toBe(-1);
@@ -57,14 +59,14 @@ describe('Inverted Index Tests: ', function() {
     });
 
     it('creates index strings without stop words', function() {
-      var keys = Object.keys(index.getIndex());
+      var keys = Object.keys(index. getIndex(path));
       for (var i = 0, len = keys.length; i < len; i++) {
         expect(filter.stopWords.indexOf(keys[i])).toBe(-1);
       }
     });
 
     it('creates index containing correct terms', function() {
-      var keys = Object.keys(index.getIndex());
+      var keys = Object.keys(index. getIndex(path));
 
       for (var i = 0, len = index0.length; i < len; i++) {
         expect(keys).toContain(index0[i]);
@@ -76,16 +78,16 @@ describe('Inverted Index Tests: ', function() {
     });
 
     it('maps string keys to the correct objects', function() {
-      var keys = Object.keys(index.getIndex());
+      var keys = Object.keys(index. getIndex(path));
 
       // Should return 0 for objects in the first array element
       for (var i = 0, len = index0.length; i < len; i++) {
-        expect(index.results[index0[i]]).toBe(0);
+        expect(index.results[path][index0[i]]).toBe(0);
       }
 
       // Should return 1 for objects in the second array element
       for (var i = 0, len = index0.length; i < len; i++) {
-        expect(index.results[index1[i]]).toBe(1);
+        expect(index.results[path][index1[i]]).toBe(1);
       }
     });
   });

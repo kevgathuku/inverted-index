@@ -58,21 +58,36 @@ function Index() {
 
 Index.prototype = {
   constructor: Index,
+  extractFileName: function(filePath) {
+    // Get the name of the file passed
+    var tokens = filePath.split('/');
+
+    // The filename is the last element of the array
+    return tokens[tokens.length - 1];
+  },
+
   createIndex: function(filePath, callback) {
     // Create a copy of the Index object referred to by 'this'
     var self = this;
     return $.getJSON(filePath, function(data) {
       // Invoke the callback only if it's a function
       if (typeof callback === 'function') {
-        // Invoke the callback, passing the Index object and the JSON data
-        callback(self, data);
+        var path = self.extractFileName(filePath);
+
+        // Invoke the callback, passing:
+        // the Index object, the file path and the JSON data
+        callback(self, path, data);
       }
     });
   },
 
-  populateIndex: function(self, data) {
+  populateIndex: function(self, path, data) {
     var filter = new Filter();
     var finalArray, inputString, splitArray, uniqueArray;
+
+    // Create an object in the self.results object with the
+    // path as the key
+    self.results[path] = {};
 
     // Iterate over each object in the array
     data.forEach(function(value, index) {
@@ -90,17 +105,21 @@ Index.prototype = {
 
       // Create the index on the self.results object
       for (var i = 0, len = finalArray.length; i < len; i++) {
-        self.results[finalArray[i]] = index;
+        self.results[path][finalArray[i]] = index;
       }
+
+      // console.log(self.results);
     });
   },
 
   searchIndex: function(terms) {
     var args, results = [];
+
     // If the argument is an array, assign it to args
-    if(Array.isArray(terms)) {
+    if (Array.isArray(terms)) {
       args = arguments[0];
     }
+
     // Otherwise convert the list of arguments to an array object
     else {
       // Set the value of this in slice to the array-like arguments object
@@ -109,13 +128,16 @@ Index.prototype = {
     }
 
     for (var j = 0; j < args.length; j++) {
-      // Convert each term to lowercase
+      // Convert each search term to lowercase
       var lower = args[j].toLowerCase();
-      // If a term is found in the index object
-      if (this.results.hasOwnProperty(lower)) {
-        // Push the term to the results array if it doesn't exist
-        if (results.indexOf(this.results[lower]) === -1) {
-          results.push(this.results[lower]);
+
+      // If a term is found in any of the index objects
+      for (key in this.results) {
+        if (this.results[key].hasOwnProperty(lower)) {
+          // Push the term to the results array if it doesn't exist
+          if (results.indexOf(this.results[key][lower]) === -1) {
+            results.push(this.results[key][lower]);
+          }
         }
       }
     }
@@ -129,7 +151,7 @@ Index.prototype = {
 
   },
 
-  getIndex: function() {
-    return this.results;
+  getIndex: function(fileName) {
+    return this.results[fileName];
   },
 };
