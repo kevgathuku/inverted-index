@@ -32,6 +32,20 @@ describe('Inverted Index Tests: ', function() {
         }
       }
     });
+
+    it("tracks that the spy was called", function(done) {
+      var testObj = new Index();
+      // Spy on the `populateIndex method`
+      spyOn(testObj, 'populateIndex').and.callThrough();
+      testObj.createIndex(filePath, testObj.populateIndex)
+      .done(function(data) {
+        expect(testObj.populateIndex).toHaveBeenCalled();
+        expect(testObj.populateIndex).toHaveBeenCalledWith(testObj, path, data);
+        // Indicate to jasmine that the async function is complete
+        done();
+      });
+    });
+
   });
 
   describe('Populates Index', function() {
