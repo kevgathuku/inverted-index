@@ -137,5 +137,23 @@ describe('Inverted Index Tests: ', function() {
       expect(index.searchIndex('imagination', 'dwarf', 'warrior').length).toBe(2);
     });
 
+    it('does not take too long to execute', function() {
+      var terms = ['alice', 'rings', 'lord', 'wonderland',
+                 'enters', 'imagination', 'hole', 'rabbit',
+                 'world', 'elf', 'dwarf', 'hobbit', 'wizard',
+                 'destroy', 'ring', 'seek', 'alliance', 'man',
+                 'non-existent', 'words', 'too'];
+      // Start tracking time juts before the function is called
+      var a = performance.now();
+      // save the results in a variable
+      var results = index.searchIndex(terms);
+      // Check the time after the function is done
+      var b = performance.now();
+
+      // check that the correct results are returned
+      expect(results.length).toBe(2);
+      // chekc that the time is below 1 ms
+      expect(b - a).toBeLessThan(1);
+    });
   });
 });
