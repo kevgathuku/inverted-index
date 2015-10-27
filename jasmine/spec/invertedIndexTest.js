@@ -26,7 +26,7 @@ describe('Inverted Index Tests: ', function() {
     it('Ensures each object property contains a string value', function() {
       for (var i = 0, len = results.length; i < len; i++) {
         // Iterate over the properties of each object
-        for(key in results[i]) {
+        for(var key in results[i]) {
           // Ensure the value is a string
           expect(typeof results[i][key]).toBe('string');
         }

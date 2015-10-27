@@ -107,8 +107,6 @@ Index.prototype = {
       for (var i = 0, len = finalArray.length; i < len; i++) {
         self.results[path][finalArray[i]] = index;
       }
-
-      // console.log(self.results);
     });
   },
 
@@ -132,7 +130,7 @@ Index.prototype = {
       var lower = args[j].toLowerCase();
 
       // If a term is found in any of the index objects
-      for (key in this.results) {
+      for (var key in this.results) {
         if (this.results[key].hasOwnProperty(lower)) {
           // Push the term to the results array if it doesn't exist
           if (results.indexOf(this.results[key][lower]) === -1) {
