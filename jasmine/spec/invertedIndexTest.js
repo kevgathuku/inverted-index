@@ -137,5 +137,24 @@ describe('Inverted Index Tests: ', function() {
       expect(index.searchIndex('imagination', 'dwarf', 'warrior').length).toBe(2);
     });
 
+    it('does not take too long to execute', function() {
+      var terms = ['alice', 'rings', 'lord', 'wonderland',
+                 'enters', 'imagination', 'hole', 'rabbit',
+                 'world', 'elf', 'dwarf', 'hobbit', 'wizard',
+                 'destroy', 'ring', 'seek', 'alliance', 'man',
+                 'non-existent', 'words', 'too'];
+      // Start tracking time just before the function is called
+      // https://developers.google.com/web/updates/2012/08/When-milliseconds-are-not-enough-performance-now
+      var start = performance.now();
+      // save the results in a variable
+      var results = index.searchIndex(terms);
+      // Check the time after the function is done
+      var end = performance.now();
+
+      // check that the correct results are returned
+      expect(results.length).toBe(2);
+      // check that the time is below 1 ms
+      expect(end - start).toBeLessThan(1);
+    });
   });
 });
