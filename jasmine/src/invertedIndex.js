@@ -116,10 +116,8 @@ Index.prototype = {
     // If the argument is an array, assign it to args
     if (Array.isArray(terms)) {
       args = arguments[0];
-    }
-
-    // Otherwise convert the list of arguments to an array object
-    else {
+    } else {
+      // Otherwise convert the list of arguments to an array object
       // Set the value of this in slice to the array-like arguments object
       // Returns an actual array object
       args = Array.prototype.slice.call(arguments);
