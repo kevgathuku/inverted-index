@@ -1,5 +1,5 @@
 describe('Inverted Index Tests: ', function() {
-
+  'use strict';
   var index = new Index();
   var filter = new Filter();
   var filePath = './books.json';
@@ -94,8 +94,6 @@ describe('Inverted Index Tests: ', function() {
     });
 
     it('maps string keys to the correct objects', function() {
-      var keys = Object.keys(index.getIndex(path));
-
       // Should return 0 for objects in the first array element
       for (var i = 0, len = index0.length; i < len; i++) {
         expect(index.results[path][index0[i]]).toBe(0);
