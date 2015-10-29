@@ -6,7 +6,7 @@ describe('Inverted Index Tests: ', function() {
   var results, path;
 
   beforeEach(function(done) {
-    index.createIndex(filePath, index.populateIndex).done(function(data) {
+    index.createIndex(filePath).done(function(data) {
       results = data;
       path = index.extractFileName(filePath);
 
@@ -26,24 +26,26 @@ describe('Inverted Index Tests: ', function() {
     it('Ensures each object property contains a string value', function() {
       for (var i = 0, len = results.length; i < len; i++) {
         // Iterate over the properties of each object
-        for(var key in results[i]) {
+        for (var key in results[i]) {
           // Ensure the value is a string
           expect(typeof results[i][key]).toBe('string');
         }
       }
     });
 
-    it("tracks that the spy was called", function(done) {
+    it('tracks that the spy was called', function(done) {
       var testObj = new Index();
+
       // Spy on the `populateIndex method`
       spyOn(testObj, 'populateIndex').and.callThrough();
       testObj.createIndex(filePath, testObj.populateIndex)
-      .done(function(data) {
-        expect(testObj.populateIndex).toHaveBeenCalled();
-        expect(testObj.populateIndex).toHaveBeenCalledWith(testObj, path, data);
-        // Indicate to jasmine that the async function is complete
-        done();
-      });
+        .done(function(data) {
+          expect(testObj.populateIndex).toHaveBeenCalled();
+          expect(testObj.populateIndex).toHaveBeenCalledWith(testObj, path, data);
+
+          // Indicate to jasmine that the async function is complete
+          done();
+        });
     });
 
   });
@@ -54,18 +56,18 @@ describe('Inverted Index Tests: ', function() {
     var index1 = ['alliance', 'elf', 'dwarf', 'wizard'];
 
     it('creates the index once JSON file has been read', function() {
-      expect(index. getIndex(path)).not.toEqual({});
+      expect(index.getIndex(path)).not.toEqual({});
     });
 
     it('creates an index containing only lowercase terms', function() {
-      var keys = Object.keys(index. getIndex(path));
+      var keys = Object.keys(index.getIndex(path));
       for (var i = 0, len = keys.length; i < len; i++) {
         expect(keys[i]).toBe(keys[i].toLowerCase());
       }
     });
 
     it('creates index strings without punctuation', function() {
-      var keys = Object.keys(index. getIndex(path));
+      var keys = Object.keys(index.getIndex(path));
       for (var i = 0, len = keys.length; i < len; i++) {
         expect(keys[i].indexOf('.')).toBe(-1);
         expect(keys[i].indexOf(',')).toBe(-1);
@@ -73,14 +75,14 @@ describe('Inverted Index Tests: ', function() {
     });
 
     it('creates index strings without stop words', function() {
-      var keys = Object.keys(index. getIndex(path));
+      var keys = Object.keys(index.getIndex(path));
       for (var i = 0, len = keys.length; i < len; i++) {
         expect(filter.stopWords.indexOf(keys[i])).toBe(-1);
       }
     });
 
     it('creates index containing correct terms', function() {
-      var keys = Object.keys(index. getIndex(path));
+      var keys = Object.keys(index.getIndex(path));
 
       for (var i = 0, len = index0.length; i < len; i++) {
         expect(keys).toContain(index0[i]);
@@ -92,7 +94,7 @@ describe('Inverted Index Tests: ', function() {
     });
 
     it('maps string keys to the correct objects', function() {
-      var keys = Object.keys(index. getIndex(path));
+      var keys = Object.keys(index.getIndex(path));
 
       // Should return 0 for objects in the first array element
       for (var i = 0, len = index0.length; i < len; i++) {
@@ -115,7 +117,7 @@ describe('Inverted Index Tests: ', function() {
 
       // The returned array should have a maximum of 2 elements
       expect(index.searchIndex(['imagination', 'dwarf', 'hobbit']).length)
-            .toBe(2);
+        .toBe(2);
     });
 
     it('returns -1 when none of the terms is found', function() {
@@ -138,21 +140,27 @@ describe('Inverted Index Tests: ', function() {
     });
 
     it('does not take too long to execute', function() {
-      var terms = ['alice', 'rings', 'lord', 'wonderland',
-                 'enters', 'imagination', 'hole', 'rabbit',
-                 'world', 'elf', 'dwarf', 'hobbit', 'wizard',
-                 'destroy', 'ring', 'seek', 'alliance', 'man',
-                 'non-existent', 'words', 'too'];
+      var terms = [
+        'alice', 'rings', 'lord', 'wonderland',
+        'enters', 'imagination', 'hole', 'rabbit',
+        'world', 'elf', 'dwarf', 'hobbit', 'wizard',
+        'destroy', 'ring', 'seek', 'alliance', 'man',
+        'non-existent', 'words', 'too'
+      ];
+
       // Start tracking time just before the function is called
       // https://developers.google.com/web/updates/2012/08/When-milliseconds-are-not-enough-performance-now
       var start = performance.now();
+
       // save the results in a variable
       var results = index.searchIndex(terms);
+
       // Check the time after the function is done
       var end = performance.now();
 
       // check that the correct results are returned
       expect(results.length).toBe(2);
+
       // check that the time is below 1 ms
       expect(end - start).toBeLessThan(1);
     });

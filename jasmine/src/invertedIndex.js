@@ -70,18 +70,15 @@ var Filter, Index;
       return tokens[tokens.length - 1];
     },
 
-    createIndex: function(filePath, callback) {
+    createIndex: function(filePath) {
       // Create a copy of the Index object referred to by 'this'
       var self = this;
       return $.getJSON(filePath, function(data) {
-        // Invoke the callback only if it's a function
-        if (typeof callback === 'function') {
-          var path = self.extractFileName(filePath);
+        var path = self.extractFileName(filePath);
 
-          // Invoke the callback, passing:
-          // the Index object, the file path and the JSON data
-          callback(self, path, data);
-        }
+        // Invoke `populateIndex` passing
+        // the Index object, the file path and the JSON data
+        self.populateIndex(self, path, data);
       });
     },
 
