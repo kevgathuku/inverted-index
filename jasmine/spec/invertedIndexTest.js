@@ -110,8 +110,8 @@ describe('Inverted Index Tests: ', function() {
 
     it('returns accurate results when searched', function() {
       expect(Array.isArray(index.searchIndex('elf'))).toBe(true);
-      expect(index.searchIndex('rabbit')).toContain(0);
-      expect(index.searchIndex('hobbit')).toContain(1);
+      expect(index.searchIndex('rabbit')).toEqual([0]);
+      expect(index.searchIndex('hobbit')).toEqual([1]);
     });
 
     it('returns -1 when none of the terms is found', function() {
@@ -120,17 +120,15 @@ describe('Inverted Index Tests: ', function() {
 
     it('handles an array of search terms', function() {
       expect(index.searchIndex(['haha', 'impossible'])).toEqual([-1, -1]);
-      expect(index.searchIndex(['imagination', 'dwarf'])).toContain(0);
-      expect(index.searchIndex(['imagination', 'dwarf'])).toContain(1);
+      expect(index.searchIndex(['imagination', 'dwarf'])).toEqual([0, 1]);
     });
 
     it('handles varied number of of search terms as arguments', function() {
       expect(index.searchIndex()).toEqual([]);
       expect(index.searchIndex([])).toEqual([]);
-      expect(index.searchIndex(['imagination'])).toContain(0);
-      expect(index.searchIndex('imagination', 'dwarf')).toContain(1);
-      expect(index.searchIndex('imagination', 'dwarf', 'warrior')).toContain(1);
-      expect(index.searchIndex('imagination', 'dwarf', 'warrior').length).toBe(3);
+      expect(index.searchIndex(['imagination'])).toEqual([0]);
+      expect(index.searchIndex('imagination', 'dwarf')).toEqual([0, 1]);
+      expect(index.searchIndex('imagination', 'dwarf', 'warrior')).toEqual([0, 1, -1]);
     });
 
     it('does not take too long to execute', function() {
