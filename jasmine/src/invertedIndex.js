@@ -45,14 +45,12 @@ var Filter, Index;
     },
 
     removeDuplicates: function(termsArray) {
-      var _results = [];
-      for (var i = 0, len = termsArray.length; i < len; i++) {
-        if (_results.indexOf(termsArray[i]) === -1) {
-          _results.push(termsArray[i]);
-        }
-      }
-
-      return _results;
+      // If the first position of an element == the current position
+      // that element is unique
+      // Evaluates to false for a duplicate element
+      return termsArray.filter(function(item, pos, arr) {
+        return arr.indexOf(item) == pos;
+      })
     },
   };
 
