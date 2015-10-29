@@ -3,11 +3,11 @@ describe('Inverted Index Tests: ', function() {
   var index = new Index();
   var filter = new Filter();
   var filePath = './books.json';
-  var results, path;
+  var path;
 
   beforeEach(function(done) {
     index.createIndex(filePath).done(function(data) {
-      results = data;
+      index.parsedJSON = data;
       path = index.extractFileName(filePath);
 
       // Invoke jasmine's done callback
@@ -18,17 +18,17 @@ describe('Inverted Index Tests: ', function() {
   describe('Reads book data', function() {
 
     it('reads the JSON file successfully', function() {
-      expect(results).toBeDefined();
-      expect(results.length).not.toEqual(0);
-      expect(results.length).toEqual(2);
+      expect(index.parsedJSON).toBeDefined();
+      expect(index.parsedJSON.length).not.toEqual(0);
+      expect(index.parsedJSON.length).toEqual(2);
     });
 
     it('Ensures each object property contains a string value', function() {
-      for (var i = 0, len = results.length; i < len; i++) {
+      for (var i = 0, len = index.parsedJSON.length; i < len; i++) {
         // Iterate over the properties of each object
-        for (var key in results[i]) {
+        for (var key in index.parsedJSON[i]) {
           // Ensure the value is a string
-          expect(typeof results[i][key]).toBe('string');
+          expect(typeof index.parsedJSON[i][key]).toBe('string');
         }
       }
     });
