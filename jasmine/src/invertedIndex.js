@@ -122,27 +122,23 @@ var Filter, Index;
         args = Array.prototype.slice.call(arguments);
       }
 
+      // Iterate over the search terms array
       for (var j = 0; j < args.length; j++) {
         // Convert each search term to lowercase
         var lower = args[j].toLowerCase();
 
         // If a term is found in any of the index objects
         for (var key in this.results) {
+          // If the search term is found in the index
           if (this.results[key].hasOwnProperty(lower)) {
-            // Push the term to the results array if it doesn't exist
-            if (results.indexOf(this.results[key][lower]) === -1) {
-              results.push(this.results[key][lower]);
-            }
+            results.push(this.results[key][lower]);
+          } else {
+            results.push(-1);
           }
         }
       }
 
-      // Return -1 if none of the search terms is found in the index
-      if (results.length === 0) {
-        return -1;
-      } else {
-        return results;
-      }
+      return results;
 
     },
 
